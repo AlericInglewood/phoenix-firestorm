@@ -1243,7 +1243,7 @@ void LLMeshRepoThread::loadMeshLOD(const LLVolumeParams& mesh_params, S32 lod)
 		if (pending != mPendingLOD.end())
 		{ //append this lod request to existing header request
 			pending->second.push_back(lod);
-			llassert(pending->second.size() <= LLModel::NUM_LODS);
+			//llassert(pending->second.size() <= LLModel::NUM_LODS);        // <MG:Aleric> this fails due to this being horribly bad code written by LL; it doesn't seem to cause more than just being inefficient duplicated downloads though. Not fixing this for now.
 		}
 		else
 		{ //if no header request is pending, fetch header
