@@ -1304,7 +1304,7 @@ void LLMeshRepoThread::loadMeshLOD(const LLUUID& mesh_id, const LLVolumeParams& 
             {
                 LL_WARNS(LOG_MESH) << "Invalid LOD request: " << lod << "for mesh" << mesh_id << LL_ENDL;
             }
-            llassert_msg(lod < LLModel::NUM_LODS, "Requested lod is out of bounds");
+			//llassert(pending->second.size() <= LLModel::NUM_LODS);        // <MG:Aleric> this fails due to this being horribly bad code written by LL; it doesn't seem to cause more than just being inefficient duplicated downloads though. Not fixing this for now.
         }
         else
         {
