@@ -142,6 +142,6 @@ and other branches are tests or whatnot (not interesting for you).
 
 8. Building the viewer.
 ```
-$ autobuild build -c ${CMAKE_CONFIG}FS_open --no-configure -- --fmodstudio --compiler-cache -DCMAKE_CXX_COMPILER=/usr/bin/g++ -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+$ autobuild build --no-configure -c ${CMAKE_CONFIG}FS_open -- --fmodstudio --compiler-cache -DCMAKE_CXX_COMPILER=/usr/bin/g++ -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
 ```
 
