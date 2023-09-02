@@ -17,7 +17,7 @@ Filesystem               Size  Used Avail Use% Mounted on
 $ export TOPPROJECT=/opt/secondlife/viewers/firestorm
 $ mkdir -p "$TOPPROJECT"
 ```
-This directory must be writable by you; we're not going to this as root.
+This directory must be writable by you; we're not going to do this as root.
 
 As I have over 200 GB free in this partition, I also add my ccache here:
 ```
