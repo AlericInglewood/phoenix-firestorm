@@ -1,36 +1,144 @@
-<img align="left" width="100" height="100" src="doc/firestorm_256.png" alt="Logo of Firestorm viewer"/>
+# phoenix-firestorm
 
-**[Firestorm](https://www.firestormviewer.org) is a free client for 3D virtual worlds such as Second Life and various OpenSim worlds where users can create, connect and chat with others from around the world.**
+This fork is being maintained by a viewer developer using Arch linux and opensim.
 
-This repository contains the official source code for the Firestorm viewer.
+To configure follow the following instructions.
 
-## Open Source
+1. Don't even think about this if your PC has less than 16 GB of ram; 32 GB ram plus 32 GB swap is highly recommended.
 
-Firestorm is a third party viewer derived from the official [Second Life](https://github.com/secondlife/viewer) client. The client codebase has been open source since 2007 and is available under the LGPL license.
+2. Find a partition with *at least* 36 GB free (read: 64 GB), and create a new directory in it where you will put everything related to this viewer
+(not including an optional ccache, which should have a size of another 32 GB, but can be put in a different partition of course).
+For example:
+```
+$ df -H /opt
+Filesystem               Size  Used Avail Use% Mounted on
+/dev/mapper/NVME1T1-opt  580G  348G  203G  64% /opt
 
-## Download
+$ export TOPPROJECT=/opt/secondlife/viewers/firestorm
+$ mkdir -p "$TOPPROJECT"
+```
+This directory must be writable by you; we're not going to this as root.
 
-Pre-built versions of the viewer releases for Windows, Mac and Linux can be downloaded from the [official website](https://www.firestormviewer.org/choose-your-platform/).
+As I have over 200 GB free in this partition, I also add my ccache here:
+```
+$ export CCACHE_DIR=/opt/ccache
+$ sudo mkdir -p "$CCACHE_DIR"
+$ sudo chown yourname "$CCACHE_DIR"
+$ sudo pacman -S --needed ccache
+$ ccache --max-size 32
+```
 
-## Build Instructions
+3. Change directory into it and clone the repository into `phoenix-firestorm-git`:
+```
+$ cd "$TOPPROJECT"
+$ git clone https://github.com/AlericInglewood/phoenix-firestorm.git phoenix-firestorm-git
+$ export REPOBASE="$TOPPROJECT/phoenix-firestorm-git"
+```
+We also set `REPOBASE` to that directory, so that now `$REPOBASE/indra` exists.
 
-Build instructions for each operating system can be found using the links below and in the official [wiki](https://wiki.firestormviewer.org).
+4. Create a virtual environment for python3 and install autobuild and llsd.
+```
+$ python3 -m venv "$TOPPROJECT/venv"
+$ export PATH="$TOPPROJECT/venv/bin:$PATH"
+$ pip install autobuild llsd
+```
+Note that pip in the last line should run `$TOPPROJECT/venv/bin/pip` because of the added path to `PATH`
+and likewise `which autobuild` now should return `$TOPPROJECT/venv/bin/autobuild`.
 
-- [Windows](doc/building_windows.md)
-- [Mac](doc/building_macos.md)
-- [Linux](doc/building_linux.md)
+5. Clone the repository `fs-build-variables`:
+```
+$ cd "$TOPPROJECT"
+$ git clone https://github.com/AlericInglewood/fs-build-variables.git
+$ export AUTOBUILD_VARIABLES_FILE="$TOPPROJECT/fs-build-variables/variables"
+$ export AUTOBUILD_ADDRSIZE=64
+```
 
-> [!NOTE]
-> We do not provide support for compiling the viewer or issues resulting from using a self-compiled viewer. However, there is a self-compilers group within Second Life that can be joined to ask questions related to compiling the viewer: [Firestorm Self Compilers](https://tinyurl.com/firestorm-self-compilers)
+6. [Optional] Download and build the `3p-fmodstudio` package.
 
-## Contribute
+We start with cloning the repository `3p-fmodstudio` into `3p-fmodstudio-git`:
+```
+$ cd "$TOPPROJECT"
+$ git clone https://vcs.firestormviewer.org/3p-libraries/3p-fmodstudio 3p-fmodstudio-git
+$ cd 3p-fmodstudio-git
+$ grep '^FMOD_VERSION_PRETTY' build-cmd.sh
+```
+Open the file called `build-cmd.sh` and look at the fifth line down, it begins with `FMOD_VERSION_PRETTY=`.
+This is the version of the API you need to download.
+The FMOD Studio API can be downloaded [here](https://www.fmod.com/) (requires creating a free account to access the download section).
+Register and login as needed, then go to https://www.fmod.com/download#fmodengine . Click `FMOD Engine` to expand the section if it isn't already.
+Click the button representing the required version, then click the Download link for the Linux file.
+Copy that file to the `3p-fmodstudio-git` directory.
 
-Help make Firestorm better! You can get involved with improvements by filing bugs and suggesting enhancements via [JIRA](https://jira.firestormviewer.org) or [creating pull requests](CONTRIBUTING.md).
+Next, build `3p-fmodstudio` and create an autobuild package:
+```
+$ cd "$TOPPROJECT/3p-fmodstudio-git"
+$ export AUTOBUILD_BUILD_ID=$(date +%Y%m%d%H%M)
+$ AUTOBUILD_CONFIG_FILE="autobuild.xml" autobuild build --all
+$ AUTOBUILD_CONFIG_FILE="autobuild.xml" autobuild package
+```
+This will end with a line saying it wrote the package, for example something similar to:
+```
+wrote  /opt/secondlife/viewers/firestorm/3p-fmodstudio-git/fmodstudio-2.02.15-linux64-202309021750.tar.bz2
+```
+Lets store this path in an environment variable and store the md5sum of the file in another environment variable:
+```
+$ FMODPKG=$TOPPROJECT/3p-fmodstudio-git/fmodstudio-$FMOD_VERSION_PRETTY-linux64-$AUTOBUILD_BUILD_ID.tar.bz2   # Use the actual path that you got.
+$ unset AUTOBUILD_BUILD_ID
+$ FMODMD5=$(md5sum $FMODPKG | sed -e 's/ .*//')
+$ echo $FMODMD5
+```
+Make sure that `FMODMD5` contains a sensible value.
 
-## Community respect
+Finally add the just installed `fmodstudio` as a package to a newly created `my_autobuild.xml`, using autobuild:
+```
+$ cd "$REPOBASE"
+$ cp autobuild.xml my_autobuild.xml
+$ export AUTOBUILD_CONFIG_FILE="$REPOBASE/my_autobuild.xml"
+$ autobuild installables edit fmodstudio platform=linux64 hash="$FMODMD5" url="file://$FMODPKG"
+```
 
-This section is guided by the [TPV Policy](https://secondlife.com/corporate/third-party-viewers) and the [Second Life Code of Conduct](https://github.com/secondlife/viewer?tab=coc-ov-file).
+7. Configure the viewer.
 
-Firestorm code is made available during ongoing development, with the **master** branch representing the current nightly build. Developers and self-compilers are encouraged to work on their own forks and contribute back via pull requests, as detailed in the [contributing guide](CONTRIBUTING.md).
+By now you should have the following environment variable set:
 
-If you intend to use our code for your own viewer beyond personal use, please only use code from official release branches (for example, `Firestorm_7.1.13`), rather than from pre-release/preview or nightly builds.
+```
+# Change to whatever you used:
+export TOPPROJECT=/opt/secondlife/viewers/firestorm
+export REPOBASE=$TOPPROJECT/phoenix-firestorm-git
+
+# Prepend python virtual environment to PATH.
+pre_path $TOPPROJECT/venv/bin
+
+export AUTOBUILD_CONFIG_FILE=$REPOBASE/my_autobuild.xml
+export AUTOBUILD_VARIABLES_FILE=$TOPPROJECT/fs-build-variables/variables
+export AUTOBUILD_ADDRSIZE=64
+
+# Change to whatever you used:
+export CCACHE_DIR=/opt/ccache
+```
+Additionally set the following environment variables.
+You might want to use http://carlowood.github.io/howto/cdeh.html for this
+and just put all of these variables in `$TOPPROJECT/env.source`.
+```
+# Something.
+export AUTOBUILD_BUILD_ID=aleric
+export XZ_DEFAULTS="-T0"
+export PYTHONIOENCODING="utf-8"
+# Set this to automatically run the viewer in gdb whenever you run ./firestorm.
+#export LL_WRAPPER='gdb --args'
+
+# Pick one of these three.
+#CMAKE_CONFIG=Release
+CMAKE_CONFIG=RelWithDebInfo
+#CMAKE_CONFIG=Debug
+```
+Then configure with:
+```
+autobuild configure -c ${CMAKE_CONFIG}FS_open -- --fmodstudio --compiler-cache -DCMAKE_CXX_COMPILER=/usr/bin/g++ -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+```
+
+8. Building the viewer.
+```
+autobuild build -c ${CMAKE_CONFIG}FS_open --no-configure -- --fmodstudio --compiler-cache -DCMAKE_CXX_COMPILER=/usr/bin/g++ -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+```
+
