@@ -23,6 +23,7 @@
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
+#include "linden_common.h" // <MG:Aleric> Must be included first.
 
 #define LLBADGE_CPP
 #include "llbadge.h"

@@ -1502,7 +1502,7 @@ void LLDAELoader::processDomModel(LLModel* model, DAE* dae, daeElement* root, do
                     {
                         domListOfFloats& transform = t->getValue();
                         auto count = transform.getCount()/16;
-    
+
                         // <FS:Beq> FIRE-34811 Crash during import due to missing inv_bind_matrices.
                         if (count==0)
                         {
@@ -1512,7 +1512,7 @@ void LLDAELoader::processDomModel(LLModel* model, DAE* dae, daeElement* root, do
                             mWarningsArray.append(args);
                             setLoadState( ERROR_PARSING );
                         }
-                        // </FS:Beq>                        
+                        // </FS:Beq>
                         for (size_t k = 0; k < count; ++k)
                         {
                             LLMatrix4 mat;

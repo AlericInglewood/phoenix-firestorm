@@ -25,6 +25,8 @@
 * $/LicenseInfo$
 */
 
+#include "linden_common.h" // <MG:Aleric> Must be included first.
+
 #include "llsettingsdaycycle.h"
 #include "llerror.h"
 #include <algorithm>

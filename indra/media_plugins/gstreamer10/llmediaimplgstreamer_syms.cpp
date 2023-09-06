@@ -26,6 +26,8 @@
  * @endcond
  */
 
+#include "linden_common.h" // <MG:Aleric> Must be included first.
+
 #include <string>
 #include <iostream>
 #include <vector>
@@ -35,8 +37,6 @@
 #define _WIN32_WINNT 0x0502
 #include <Windows.h>
 #endif
-
-#include "linden_common.h"
 
 extern "C" {
 #include <gst/gst.h>

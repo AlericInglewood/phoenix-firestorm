@@ -27,7 +27,6 @@
 
 #include "llflashtimer.h"
 
-#include "linden_common.h"
 #include "llfolderviewitem.h"
 #include "llfolderview.h"
 #include "llfolderviewmodel.h"

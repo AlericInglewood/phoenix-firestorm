@@ -24,14 +24,14 @@
  * $/LicenseInfo$
  */
 
-#include <iostream>
-#include "linden_common.h"
+#include "linden_common.h" // <MG:Aleric> Must be included first.
 
 #include "llsaleinfo.h"
-
 #include "llerror.h"
 #include "message.h"
 #include "llsdutil.h"
+
+#include <iostream>
 
 // use this to avoid temporary object creation
 const LLSaleInfo LLSaleInfo::DEFAULT;
