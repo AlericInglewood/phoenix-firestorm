@@ -24,14 +24,10 @@
 * $/LicenseInfo$
 */
 
-#include <cstdio>
-#include <cstdlib>
-#include <sstream>
-#include <map>
+#include "linden_common.h" // <MG:Aleric> Must be included first.
 
 #include "llcrashlogger.h"
 #include "llcrashlock.h"
-#include "linden_common.h"
 #include "llstring.h"
 #include "indra_constants.h"    // CRASH_BEHAVIOR_...
 #include "llerror.h"

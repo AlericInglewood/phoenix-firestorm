@@ -24,6 +24,8 @@
  * $/LicenseInfo$
  */
 
+#include "linden_common.h" // <MG:Aleric> Must be included first.
+
 #include "llmodelloader.h"
 
 #include "llapp.h"

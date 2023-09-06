@@ -25,6 +25,8 @@
 * $/LicenseInfo$
 */
 
+#include "linden_common.h" // <MG:Aleric> Must be included first.
+
 #include "llsettingssky.h"
 #include "indra_constants.h"
 #include <algorithm>
