@@ -42,6 +42,17 @@ if (NOT CMAKE_BUILD_TYPE)
       "Build type.  One of: Release RelWithDebInfo" FORCE)
 endif (NOT CMAKE_BUILD_TYPE)
 
+#<MG:Aleric> optional cwds support.
+if (LINUX AND NOT CMAKE_BUILD_TYPE STREQUAL "Release")
+  option(CWDS "CWDEBUG support" OFF)
+  if (CWDS)
+    message(STATUS "Compiling with cwds support")
+    include(cwm4/cmake/AICxxProject)
+    include(AICxxSubmodules)
+  endif (CWDS)
+endif ()
+#</MG:Aleric>
+
 #<FS:AW optional opensim support>
 option(OPENSIM "OpenSim support" OFF)
 if (OPENSIM)

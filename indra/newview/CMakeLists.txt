@@ -2566,6 +2566,13 @@ if( TARGET ll::nvapi )
 endif()
 
 if (LINUX)
+    # <MG:Aleric> Add support for cwds.
+    if (CWDS)
+      target_link_libraries(${VIEWER_BINARY_NAME}
+        ${AICXX_OBJECTS_LIST}
+      )
+    endif (CWDS)
+    # </MG:Aleric>
     # <FS:Zi> put these additional libraries in the viewer build target here as it didn't
     # work to put them in via their cmake/* files
     target_link_libraries(${VIEWER_BINARY_NAME}

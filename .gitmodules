@@ -1,0 +1,6 @@
+[submodule "indra/cwds"]
+	path = indra/cwds
+	url = https://github.com/CarloWood/cwds.git
+[submodule "indra/cwm4"]
+	path = indra/cwm4
+	url = https://github.com/CarloWood/cwm4.git
