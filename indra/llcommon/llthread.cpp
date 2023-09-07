@@ -133,6 +133,12 @@ void LLThread::registerThreadID() {}
 //
 void LLThread::threadRun()
 {
+// <MG:Aleric> Add libcwd support.
+#ifdef CWDEBUG
+    debug::init_thread();
+#endif
+// </MG:Aleric>
+
 #ifdef LL_WINDOWS
     set_thread_name(-1, mName.c_str());
 

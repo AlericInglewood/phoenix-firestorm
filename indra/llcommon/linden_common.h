@@ -27,6 +27,13 @@
 #ifndef LL_LINDEN_COMMON_H
 #define LL_LINDEN_COMMON_H
 
+// <MG:Aleric> This must be the very first header file when using libcwd (aka, on linux).
+#ifdef CWDEBUG
+#include "sys.h"
+#endif
+#include "debug.h"      // Lets add that here too, why not.
+// </MG:Aleric>
+
 #include "llprofiler.h"
 // <FS:Beq/> #if (TRACY_ENABLE)
 #if (TRACY_ENABLE) && LL_PROFILER_ENABLE_TRACY_MEMORY

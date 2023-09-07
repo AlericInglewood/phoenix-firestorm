@@ -1181,6 +1181,7 @@ namespace LLError
     }
 }
 
+#ifndef CWDEBUG // <MG:Aleric> writeToRecorders is not used when CWDEBUG is defined.
 namespace
 {
     std::string escapedMessageLines(const std::string& message)
@@ -1291,6 +1292,11 @@ namespace
         }
     }
 }
+#else
+NAMESPACE_DEBUG_CHANNELS_START
+channel_ct viewer("VIEWER");
+NAMESPACE_DEBUG_CHANNELS_END
+#endif // <MG:Aleric> match corresponding #ifndef CWDEBUG
 
 namespace {
     // Some logging calls happen very early in processing -- so early that our
@@ -1445,7 +1451,15 @@ namespace LLError
             message = message_stream.str();
         }
 
-        writeToRecorders(site, message);
+// <MG:Aleric> Include normal logging in libcwd's message processing.
+#ifdef CWDEBUG
+        Dout(dc::viewer, site.mLevelString << ": " << message);
+#else
+// </MG:Aleric>
+		writeToRecorders(site, message);
+// <MG:Aleric> Include normal logging in libcwd's message processing.
+#endif
+// </MG:Aleric>
 
         if (site.mLevel == LEVEL_ERROR)
         {
@@ -1454,6 +1468,11 @@ namespace LLError
             {
                 s->mCrashFunction(message);
             }
+// <MG:Aleric> Crash using libcwd instead of using LLERROR_CRASH in LL_ENDL.
+#ifdef CWDEBUG
+            DoutFatal(dc::core, message);
+#endif
+// </MG:Aleric>
         }
     }
 }

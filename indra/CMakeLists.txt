@@ -16,6 +16,16 @@ set(ROOT_PROJECT_NAME "Firestorm" CACHE STRING
     "The root project/makefile/solution name. Defaults to Firestorm.")
 project(${ROOT_PROJECT_NAME})
 
+include(FetchContent)
+
+#set(GITACHE_PACKAGES libcwd_r)  # List of requested packages (example).
+FetchContent_Declare(
+  gitache
+  GIT_REPOSITORY "https://github.com/CarloWood/gitache.git"
+  GIT_TAG        "stable"
+)
+FetchContent_MakeAvailable(gitache)
+
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake"  "${CMAKE_CURRENT_BINARY_DIR}")
 
 include(conanbuildinfo OPTIONAL RESULT_VARIABLE USE_CONAN )
@@ -49,6 +59,7 @@ if (LINUX AND NOT CMAKE_BUILD_TYPE STREQUAL "Release")
     message(STATUS "Compiling with cwds support")
     include(cwm4/cmake/AICxxProject)
     include(AICxxSubmodules)
+    set_property(TARGET cwds_ObjLib PROPERTY POSITION_INDEPENDENT_CODE ON)
   endif (CWDS)
 endif ()
 #</MG:Aleric>

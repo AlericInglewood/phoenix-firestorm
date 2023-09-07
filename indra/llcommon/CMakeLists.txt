@@ -2,6 +2,10 @@
 
 project(llcommon)
 
+if (CWDS)
+  include(AICxxProject)
+endif ()
+
 include(00-Common)
 include(LLCommon)
 include(bugsplat)
@@ -311,6 +315,7 @@ target_link_libraries(
         ll::boost
         ll::oslibraries
         ll::tracy
+        ${AICXX_OBJECTS_LIST}
     )
 
 target_include_directories(llcommon INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
