@@ -50,7 +50,7 @@ include(ZLIBNG)
 include(LLPrimitive)
 include(Growl)
 include(ColladaDom)
-include(jemalloc)
+#include(jemalloc)
 include(Discord)
 
 # <FS:ND> if using ndPhysicsstub this variable will be unset, we don't need to build any stub code viewer side in that case
@@ -2568,6 +2568,10 @@ endif()
 if (LINUX)
     # <MG:Aleric> Add support for cwds.
     if (CWDS)
+
+      # Add rpath for libcwd_r.
+      string(REGEX REPLACE "(-rpath,[^ ]+)" "-rpath,'${libcwd_r_ROOT}/lib',\\1" CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
+
       target_link_libraries(${VIEWER_BINARY_NAME}
         ${AICXX_OBJECTS_LIST}
       )

@@ -115,6 +115,11 @@ static void exceptionTerminateHandler()
 
 int main( int argc, char **argv )
 {
+    // <MG:Aleric> Initialize libcwd.
+    Debug(NAMESPACE_DEBUG::init());
+    Dout(dc::notice, "Entering main()");
+    // </MG:Aleric>
+
     gArgC = argc;
     gArgV = argv;
 
