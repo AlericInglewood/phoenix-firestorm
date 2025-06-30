@@ -2244,7 +2244,7 @@ class LinuxManifest(ViewerManifest):
             # version number.
             #self.path("libfontconfig.so.*.*")
 
-            self.path_optional("libjemalloc.so*")
+            #self.path_optional("libjemalloc.so*")
 
         # WebRTC libraries
         with self.prefix(src=os.path.join(self.args['build'], os.pardir,
