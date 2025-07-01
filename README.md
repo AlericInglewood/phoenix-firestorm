@@ -58,11 +58,11 @@ $ export AUTOBUILD_ADDRSIZE=64
 We start with cloning the repository `3p-fmodstudio` into `3p-fmodstudio-git`:
 ```
 $ cd "$TOPPROJECT"
-$ git clone https://vcs.firestormviewer.org/3p-libraries/3p-fmodstudio 3p-fmodstudio-git
+$ git clone https://github.com/FirestormViewer/3p-fmodstudio 3p-fmodstudio-git
 $ cd 3p-fmodstudio-git
 $ grep '^FMOD_VERSION_PRETTY' build-cmd.sh
 ```
-Open the file called `build-cmd.sh` and look at the fifth line down, it begins with `FMOD_VERSION_PRETTY=`.
+Open the file called `build-cmd.sh` and look at the sixth line down, it begins with `FMOD_VERSION_PRETTY=`.
 This is the version of the API you need to download.
 The FMOD Studio API can be downloaded [here](https://www.fmod.com/) (requires creating a free account to access the download section).
 Register and login as needed, then go to https://www.fmod.com/download#fmodengine . Click `FMOD Engine` to expand the section if it isn't already.
@@ -78,7 +78,7 @@ $ AUTOBUILD_CONFIG_FILE="autobuild.xml" autobuild package
 ```
 This will end with a line saying it wrote the package, for example something similar to:
 ```
-wrote  /opt/secondlife/viewers/firestorm/3p-fmodstudio-git/fmodstudio-2.02.15-linux64-202309021750.tar.bz2
+wrote  /opt/secondlife/viewers/firestorm/3p-fmodstudio-git/fmodstudio-2.03.07-linux64-202507010106.tar.bz2
 ```
 Lets store this path in an environment variable and store the md5sum of the file in another environment variable:
 ```
@@ -87,7 +87,7 @@ $ unset AUTOBUILD_BUILD_ID
 $ FMODMD5=$(md5sum $FMODPKG | sed -e 's/ .*//')
 $ echo $FMODMD5
 ```
-Make sure that `FMODMD5` contains a sensible value.
+Make sure that `FMODMD5` contains a sensible value (ie, set the FMOD_VERSION_PRETTY environment variable first).
 
 Finally add the just installed `fmodstudio` as a package to a newly created `my_autobuild.xml`, using autobuild:
 ```
@@ -134,9 +134,11 @@ CMAKE_CONFIG=RelWithDebInfo
 ```
 Then configure with:
 ```
-$ git checkout aleric
+$ git switch aleric
 $ autobuild configure -c ${CMAKE_CONFIG}FS_open -- --fmodstudio --compiler-cache -DCMAKE_CXX_COMPILER=/usr/bin/g++ -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
 ```
+The FS in `FS_open` stands for FmodStudio. Use `-c ${CMAKE_CONFIG}OS` if you don't want to use `--fmodstudio` (`_open` and `OS` stand for OpenSim).
+
 **Important**: all work is done on the branch `aleric`. The `master` branch is just upstream
 and other branches are tests or whatnot (not interesting for you).
 
