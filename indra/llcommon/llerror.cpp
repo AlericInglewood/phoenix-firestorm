@@ -1461,8 +1461,6 @@ namespace LLError
 #endif
 // </MG:Aleric>
 
-        writeToRecorders(site, message);
-
         if (site.mLevel == LEVEL_ERROR)
         {
             g->mFatalMessage = message;
