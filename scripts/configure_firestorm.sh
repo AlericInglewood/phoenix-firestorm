@@ -70,7 +70,7 @@ showUsage()
     echo "  --build                  : Build Firestorm"
     echo "  --version                : Update version number"
     echo "  --chan  [Release|Beta|Private]   : Private is the default, sets channel"
-    echo "  --btype [Release|RelWithDebInfo] : Release is default, whether to use symbols"
+    echo "  --btype [Release|RelWithDebInfo|Debug] : Release is default, whether to use symbols"
     echo "  --kdu                    : Build with KDU"
     echo "  --package                : Build installer"
     echo "  --no-package             : Build without installer (Overrides --package)"
@@ -113,7 +113,7 @@ getArgs()
           config)         WANTS_CONFIG=$TRUE;;
           version)        WANTS_VERSION=$TRUE;;
           chan)           CHANNEL="$OPTARG";;
-          btype)          if [ \( "$OPTARG" == "Release" \) -o \( "$OPTARG" == "RelWithDebInfo" \) ] ; then
+          btype)          if [ \( "$OPTARG" == "Release" \) -o \( "$OPTARG" == "RelWithDebInfo" \) -o \( "$OPTARG" == "Debug" \) ] ; then
                             BTYPE="$OPTARG"
                           fi
                           ;;
