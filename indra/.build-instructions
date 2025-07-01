@@ -1,0 +1,28 @@
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+export REPOBASE=$(dirname "$SCRIPT_DIR")
+export TOPPROJECT=$(dirname "$REPOBASE")
+
+export BUILDDIR="$TOPPROJECT/build-linux-x86_64"
+
+echo "TOPPROJECT = \"${TOPPROJECT}\""
+echo "REPOBASE = \"${REPOBASE}\""
+echo "BUILDDIR = \"${BUILDDIR}\""
+
+: "${CMAKE_CONFIG:="Release"}"
+export CMAKE_CONFIG
+echo "CMAKE_CONFIG = \"${CMAKE_CONFIG}\""
+
+EXTRA_OPTIONS=""
+
+if [[ "$CMAKE_CONFIG" != "Release" ]]; then
+  EXTRA_OPTIONS+=" -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON"
+fi
+if [[ "$CMAKE_CONFIG" == "Debug" ]]; then
+  EXTRA_OPTIONS+=" -DCWDS:BOOL=ON"
+fi
+
+echo -e "\nTo make a ${CMAKE_CONFIG} build, run:"
+echo "autobuild build --no-configure -c ${CMAKE_CONFIG}FS_open -- --fmodstudio --compiler-cache --jobs=$(nproc) -DCMAKE_CXX_COMPILER=/usr/bin/g++${EXTRA_OPTIONS}"
+
+# Don't print anything after this.
+exit 0
