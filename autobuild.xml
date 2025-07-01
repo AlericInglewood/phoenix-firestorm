@@ -3295,10 +3295,6 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                   <string>-DROOT_PROJECT_NAME:STRING=SecondLife</string>
                   <string>-DINSTALL_PROPRIETARY=FALSE</string>
                 </array>
-                <key>arguments</key>
-                <array>
-                  <string>../indra</string>
-                </array>
               </map>
               <key>name</key>
               <string>DebugOS</string>
@@ -3830,6 +3826,33 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
               <key>name</key>
               <string>DebugFS</string>
             </map>
+            <key>DebugFS</key>
+            <map>
+              <key>build</key>
+              <map>
+                <key>options</key>
+                <array>
+                  <string>--package</string>
+                  <string>--platform darwin</string>
+                  <string>--fmodstudio</string>
+                  <string>--kdu</string>
+                </array>
+              </map>
+              <key>configure</key>
+              <map>
+                <key>options</key>
+                <array>
+                  <string>--platform darwin</string>
+                  <string>--package</string>
+                  <string>--fmodstudio</string>
+                  <string>--kdu</string>
+                </array>
+              </map>
+              <key>default</key>
+              <string>True</string>
+              <key>name</key>
+              <string>DebugFS</string>
+            </map>
             <key>RelWithDebInfoFS_open</key>
             <map>
               <key>build</key>
@@ -4090,6 +4113,31 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
               <key>name</key>
               <string>DebugFS</string>
             </map>
+            <key>DebugFS</key>
+            <map>
+              <key>build</key>
+              <map>
+                <key>options</key>
+                <array>
+                  <string>--platform linux</string>
+                  <string>--package</string>
+                </array>
+              </map>
+              <key>configure</key>
+              <map>
+                <key>options</key>
+                <array>
+                  <string>--kdu</string>
+                  <string>--fmodstudio</string>
+                  <string>--platform linux</string>
+                  <string>--package</string>
+                </array>
+              </map>
+              <key>default</key>
+              <string>True</string>
+              <key>name</key>
+              <string>DebugFS</string>
+            </map>
             <key>RelWithDebInfoFS_open</key>
             <map>
               <key>build</key>
@@ -4224,6 +4272,43 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
               -->
               <key>name</key>
               <string>RelWithDebInfo</string>
+            </map>
+            <key>Debug</key>
+            <map>
+              <key>build</key>
+              <map>
+                <key>arguments</key>
+                <array>
+                  <string>SecondLife.sln</string>
+                </array>
+                <key>command</key>
+                <string>devenv</string>
+                <key>options</key>
+                <array>
+                  <string>/build</string>
+                  <string>Debug|${AUTOBUILD_WIN_VSPLATFORM|NOTWIN}</string>
+                </array>
+              </map>
+              <key>configure</key>
+              <map>
+                <key>arguments</key>
+                <array>
+                  <string>..\indra</string>
+                </array>
+                <key>options</key>
+                <array>
+                  <string>-G</string>
+                  <string>${AUTOBUILD_WIN_CMAKE_GEN|NOTWIN}</string>
+                  <string>-A</string>
+                  <string>${AUTOBUILD_WIN_VSPLATFORM|NOTWIN}</string>
+                </array>
+              </map>
+              <!-- FS:Ansariel: This will cause packages being installed twice
+              <key>default</key>
+              <string>True</string>
+              -->
+              <key>name</key>
+              <string>Debug</string>
             </map>
             <key>Debug</key>
             <map>
@@ -4445,6 +4530,33 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
               -->
               <key>name</key>
               <string>RelWithDebInfoFS</string>
+            </map>
+            <key>DebugFS</key>
+            <map>
+              <key>build</key>
+              <map>
+                <key>options</key>
+                <array>
+                  <string>--fmodstudio</string>
+                  <string>--kdu</string>
+                  <string>--version</string>
+                  <string>--platform windows</string>
+                </array>
+              </map>
+              <key>configure</key>
+              <map>
+                <key>options</key>
+                <array>
+                  <string>--fmodstudio</string>
+                  <string>--kdu</string>
+                  <string>--version</string>
+                  <string>--platform windows</string>
+                </array>
+              </map>
+              <key>default</key>
+              <string>True</string>
+              <key>name</key>
+              <string>DebugFS</string>
             </map>
             <key>DebugFS</key>
             <map>
