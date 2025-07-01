@@ -18,7 +18,7 @@ project(${ROOT_PROJECT_NAME})
 
 include(FetchContent)
 
-#set(GITACHE_PACKAGES libcwd_r)  # List of requested packages (example).
+set(GITACHE_PACKAGES libcwd_r)  # List of requested packages (example).
 FetchContent_Declare(
   gitache
   GIT_REPOSITORY "https://github.com/CarloWood/gitache.git"
