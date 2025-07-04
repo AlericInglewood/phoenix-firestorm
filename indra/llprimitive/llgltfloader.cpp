@@ -24,6 +24,8 @@
  * $/LicenseInfo$
  */
 
+#include "linden_common.h" // <MG:Aleric> Must be included first.
+
 #include "llgltfloader.h"
 
 // Import & define single-header gltf import/export lib
