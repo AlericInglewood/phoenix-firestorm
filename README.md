@@ -96,8 +96,20 @@ $ cp autobuild.xml my_autobuild.xml
 $ export AUTOBUILD_CONFIG_FILE="$REPOBASE/my_autobuild.xml"
 $ autobuild installables edit fmodstudio platform=linux64 hash="$FMODMD5" url="file://$FMODPKG"
 ```
+7. Remove the glib and pcre packages.
 
-7. Configure the viewer.
+On linux the libmedia_plugin_cef.so plugin depends on the system fontconfig library, which in turn depends
+on the system glib-2.0 library. We can't use the packaged libglib-2.0.a because that leads to an assert
+while loading the libmedia_plugin_cef.so plugin (if we link with the provided libpcre.a that is, otherwise
+you just get an undefined symbol `pcre_free` error).
+
+In order to simply use the system provided glib-2.0 library, remove the glib-2.0 package.
+Also remove the pcre package, as glib-2.0 is the only one that was depending on that.
+```
+$ autobuild uninstall glib pcre
+```
+
+8. Configure the viewer.
 
 By now you should have the following environment variable set:
 
@@ -142,7 +154,7 @@ The FS in `FS_open` stands for FmodStudio. Use `-c ${CMAKE_CONFIG}OS` if you don
 **Important**: all work is done on the branch `aleric`. The `master` branch is just upstream
 and other branches are tests or whatnot (not interesting for you).
 
-8. Building the viewer.
+9. Building the viewer.
 ```
 $ autobuild build --no-configure -c ${CMAKE_CONFIG}FS_open -- --fmodstudio --compiler-cache -DCMAKE_CXX_COMPILER=/usr/bin/g++ -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
 ```
