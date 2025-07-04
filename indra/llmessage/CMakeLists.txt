@@ -197,6 +197,9 @@ target_link_libraries(
 )
 target_include_directories( llmessage  INTERFACE   ${CMAKE_CURRENT_SOURCE_DIR})
 
+# <MG:Aleric> mold requires this.
+set_property(TARGET llmessage PROPERTY POSITION_INDEPENDENT_CODE ON)
+
 # tests
 if (LL_TESTS)
   SET(llmessage_TEST_SOURCE_FILES
