@@ -1026,9 +1026,9 @@ void LLKeywords::dump()
 void LLKeywordToken::dump()
 {
     LL_INFOS() << "[" <<
-        mColor.mV[VRED] << ", " <<
-        mColor.mV[VGREEN] << ", " <<
-        mColor.mV[VBLUE] << "] [" <<
+        mColor.get().mV[VRED] << ", " <<
+        mColor.get().mV[VGREEN] << ", " <<
+        mColor.get().mV[VBLUE] << "] [" <<
         wstring_to_utf8str(mToken) << "]" <<
         LL_ENDL;
 }
