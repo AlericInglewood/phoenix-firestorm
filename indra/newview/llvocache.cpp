@@ -59,7 +59,7 @@ bool check_write(LLAPRFile* apr_file, void* src, S32 n_bytes)
 
 // Material Override Cache needs a version label, so we can upgrade this later.
 const std::string LLGLTFOverrideCacheEntry::VERSION_LABEL = {"GLTFCacheVer"};
-const int LLGLTFOverrideCacheEntry::VERSION = 1;
+const int LLGLTFOverrideCacheEntry::VERSION_ = 1;   // <FS:Aleric> VERSION is a macro.
 
 bool LLGLTFOverrideCacheEntry::fromLLSD(const LLSD& data)
 {
@@ -1673,7 +1673,7 @@ void LLVOCache::readGenericExtrasFromCache(U64 handle, const LLUUID& id, LLVOCac
     }
     // For future versions we may call a legacy handler here, but realistically we'll just consider this cache out of date.
     // The important thing is to make sure it gets removed.
-    if(versionNumber != LLGLTFOverrideCacheEntry::VERSION)
+    if(versionNumber != LLGLTFOverrideCacheEntry::VERSION_)     // <FS:Aleric> VERSION is a macro.
     {
         LL_WARNS() << "Unexpected version number " << versionNumber << " for extras cache for handle " << handle << LL_ENDL;
         in.close();
@@ -1960,7 +1960,7 @@ void LLVOCache::writeGenericExtrasToCache(U64 handle, const LLUUID& id, const LL
     }
     // It is good practice to version file formats so let's add one.
     // legacy versions will be treated as version 0.
-    out << LLGLTFOverrideCacheEntry::VERSION_LABEL << ":" << LLGLTFOverrideCacheEntry::VERSION << '\n';
+    out << LLGLTFOverrideCacheEntry::VERSION_LABEL << ":" << LLGLTFOverrideCacheEntry::VERSION_ << '\n';    // <FS:Aleric> VERSION is a macro.
 
     out << id << '\n';
     if(!out.good())

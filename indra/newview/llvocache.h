@@ -44,7 +44,7 @@ class LLGLTFOverrideCacheEntry
 {
 public:
     static const std::string VERSION_LABEL;
-    static const int VERSION;
+    static const int VERSION_;                  // <FS:Aleric> VERSION is a macro.
     bool fromLLSD(const LLSD& data);
     LLSD toLLSD() const;
 
