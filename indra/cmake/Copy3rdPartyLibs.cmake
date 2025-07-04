@@ -261,8 +261,9 @@ elseif(LINUX)
                  libuuid.so.16.0.22
 
 
-                 libgmodule-2.0.a
-                 libgobject-2.0.a
+                 # <MG:Aleric> We use the system glib.
+                 #libgmodule-2.0.a
+                 #libgobject-2.0.a
                  )
 
         if(LLCOMMON_LINK_SHARED)
