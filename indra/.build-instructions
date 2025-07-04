@@ -20,9 +20,12 @@ fi
 if [[ "$CMAKE_CONFIG" == "Debug" ]]; then
   EXTRA_OPTIONS+=" -DCWDS:BOOL=ON"
 fi
+if [[ -x /usr/bin/lld ]]; then
+  EXTRA_OPTIONS+=" -DCMAKE_LINKER_TYPE=LLD"
+fi
 
 echo -e "\nTo make a ${CMAKE_CONFIG} build, run:"
-echo "autobuild build --no-configure -c ${CMAKE_CONFIG}FS_open -- --fmodstudio --compiler-cache --jobs=$(nproc) -DCMAKE_CXX_COMPILER=/usr/bin/g++${EXTRA_OPTIONS}"
+echo "autobuild build --no-configure -c ${CMAKE_CONFIG}FS_open -- --ninja --fmodstudio --compiler-cache --jobs=$(nproc) -DCMAKE_MESSAGE_LOG_LEVEL=STATUS -DCMAKE_CXX_COMPILER=/usr/bin/g++${EXTRA_OPTIONS}"
 
 # Don't print anything after this.
 exit 0
