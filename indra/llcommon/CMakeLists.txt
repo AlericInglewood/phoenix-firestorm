@@ -293,16 +293,6 @@ list(APPEND llcommon_SOURCE_FILES ${llcommon_HEADER_FILES})
 
 add_library (llcommon ${llcommon_SOURCE_FILES})
 
-# <FS:TS> This must be broken out because llcommon is always built as
-#         shared but LLCOMMON_LINK_SHARED is turned off explicitly
-if(NOT WORD_SIZE EQUAL 32)
-  if(WINDOWS)
-#    add_definitions(/FIXED:NO)
-  else(WINDOWS) # not windows therefore gcc LINUX and DARWIN
-    add_definitions(-fPIC)
-  endif(WINDOWS)
-endif(NOT WORD_SIZE EQUAL 32)
-
 target_link_libraries(
         llcommon
         ll::apr
@@ -315,6 +305,16 @@ target_link_libraries(
 
 target_include_directories(llcommon INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(llcommon PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+# <FS:TS> This must be broken out because llcommon is always built as
+#         shared but LLCOMMON_LINK_SHARED is turned off explicitly
+if(NOT WORD_SIZE EQUAL 32)
+  if(WINDOWS)
+#    add_definitions(/FIXED:NO)
+  else(WINDOWS) # not windows therefore gcc LINUX and DARWIN
+     set_property(TARGET llcommon PROPERTY POSITION_INDEPENDENT_CODE ON)    # <FS::Aleric> set POSITION_INDEPENDENT_CODE instead of adding -fPIC directly.
+  endif(WINDOWS)
+endif(NOT WORD_SIZE EQUAL 32)
 
 add_dependencies(llcommon stage_third_party_libs)
 
