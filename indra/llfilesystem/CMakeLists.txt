@@ -56,6 +56,10 @@ target_link_libraries(llfilesystem
     )
 target_include_directories( llfilesystem  INTERFACE   ${CMAKE_CURRENT_SOURCE_DIR})
 
+# <MG:Aleric> mold requires this: llfilesystem is a dependency of llplugin (and llimage), which is a dependency of media_plugin_base, which is a dependency of
+# media_plugin_cef, media_plugin_libvlc, media_plugin_gstreamer010 and media_plugin_gstreamer10 that all are shared libraries.
+set_property(TARGET llfilesystem PROPERTY POSITION_INDEPENDENT_CODE ON)
+
 # Add tests
 if (LL_TESTS)
     include(LLAddBuildTest)

@@ -47,6 +47,11 @@ list(APPEND llimage_SOURCE_FILES ${llimage_HEADER_FILES})
 
 add_library (llimage ${llimage_SOURCE_FILES})
 target_include_directories( llimage  INTERFACE   ${CMAKE_CURRENT_SOURCE_DIR})
+
+# <MG:Aleric> mold requires this: llimage is a dependency of llplugin, which is a dependency of media_plugin_base, which is a dependency of
+# media_plugin_cef, media_plugin_libvlc, media_plugin_gstreamer010 and media_plugin_gstreamer10 that all are shared libraries.
+set_property(TARGET llimage PROPERTY POSITION_INDEPENDENT_CODE ON)
+
 # Libraries on which this library depends, needed for Linux builds
 # Sort by high-level to low-level
 if (USE_KDU)

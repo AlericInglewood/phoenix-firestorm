@@ -106,6 +106,10 @@ add_library (llmath ${llmath_SOURCE_FILES})
 target_link_libraries(llmath llcommon llmeshoptimizer)
 target_include_directories( llmath  INTERFACE   ${CMAKE_CURRENT_SOURCE_DIR})
 
+# <MG:Aleric> mold requires this: llmath is a dependency of llplugin (and llimage), which is a dependency of media_plugin_base, which is a dependency of
+# media_plugin_cef, media_plugin_libvlc, media_plugin_gstreamer010 and media_plugin_gstreamer10 that all are shared libraries.
+set_property(TARGET llmath PROPERTY POSITION_INDEPENDENT_CODE ON)
+
 # Add tests
 if (LL_TESTS)
   include(LLAddBuildTest)
