@@ -211,7 +211,10 @@ public:
     bool    canPaste() const { return mCanPaste; };
 
     // These can be called before init(), and they will be queued and sent before the media init message.
-    void    setUserDataPath(const std::string &user_data_path_cache, const std::string &username, const std::string &user_data_path_cef_log);
+    void    setUserDataPath(const std::string &user_data_path_cache, const std::string &username, const std::string &user_data_path_cef_log,
+// <FS:Aleric> A plugin doesn't have access to gSavedSettings. We must pass this boolean from the caller.
+            bool cef_verbose_log);
+// </FS:Aleric>
     void    setLanguageCode(const std::string &language_code);
     void    setPluginsEnabled(const bool enabled);
     void    setJavascriptEnabled(const bool enabled);

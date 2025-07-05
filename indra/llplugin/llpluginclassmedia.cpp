@@ -933,14 +933,18 @@ void LLPluginClassMedia::paste()
 
 void LLPluginClassMedia::setUserDataPath(const std::string &user_data_path_cache,
                                          const std::string &username,
-                                         const std::string &user_data_path_cef_log)
+                                         const std::string &user_data_path_cef_log,
+// <FS:Aleric> A plugin doesn't have access to gSavedSettings. We must pass this boolean from the caller.
+                                         bool cef_verbose_log
+// </FS:Aleric>
+                                         )
 {
     LLPluginMessage message(LLPLUGIN_MESSAGE_CLASS_MEDIA, "set_user_data_path");
     message.setValue("cache_path", user_data_path_cache);
     message.setValue("username", username); // cef shares cache between users but creates user-based contexts
     message.setValue("cef_log_file", user_data_path_cef_log);
 
-    bool cef_verbose_log = gSavedSettings.getBOOL("CefVerboseLog");
+    // <FS:Aleric> cef_verbose_log is now passed as a function parameter.  //bool cef_verbose_log = gSavedSettings.getBOOL("CefVerboseLog");
     message.setValueBoolean("cef_verbose_log", cef_verbose_log);
     sendMessage(message);
 }
