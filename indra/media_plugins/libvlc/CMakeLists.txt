@@ -14,14 +14,6 @@ include(LibVLCPlugin)
 
 ### media_plugin_libvlc
 
-if(NOT ADDRESS_SIZE EQUAL 32)
-  if(WINDOWS)
-    ##add_definitions(/FIXED:NO)
-  else(WINDOWS) # not windows therefore gcc LINUX and DARWIN
-    add_definitions(-fPIC)
-  endif(WINDOWS)
-endif(NOT ADDRESS_SIZE EQUAL 32)
-
 set(media_plugin_libvlc_SOURCE_FILES
     media_plugin_libvlc.cpp
     )
@@ -30,6 +22,15 @@ add_library(media_plugin_libvlc
     SHARED
     ${media_plugin_libvlc_SOURCE_FILES}
     )
+
+# <FS:aleric> Move this below the target declaration.
+if(NOT ADDRESS_SIZE EQUAL 32)
+  if(WINDOWS)
+    ##add_definitions(/FIXED:NO)
+  else(WINDOWS) # not windows therefore gcc LINUX and DARWIN
+    set_property(TARGET media_plugin_libvlc PROPERTY POSITION_INDEPENDENT_CODE ON)     # <FS::Aleric> set POSITION_INDEPENDENT_CODE instead of adding -fPIC directly.
+  endif(WINDOWS)
+endif(NOT ADDRESS_SIZE EQUAL 32)
 
 target_link_libraries(media_plugin_libvlc
         media_plugin_base

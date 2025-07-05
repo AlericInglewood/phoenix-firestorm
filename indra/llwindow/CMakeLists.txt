@@ -189,7 +189,11 @@ endif (llwindow_HEADER_FILES)
 
   target_link_libraries (llwindow ${llwindow_LINK_LIBRARIES})
   target_include_directories(llwindow INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
-  
+
+  # <MG:Aleric> mold requires this: llwindow is a dependency of llplugin (through llrender), which is a dependency of media_plugin_base, which is a dependency of
+  # media_plugin_cef, media_plugin_libvlc, media_plugin_gstreamer010 and media_plugin_gstreamer10 that all are shared libraries.
+  set_property(TARGET llwindow PROPERTY POSITION_INDEPENDENT_CODE ON)
+
 if (DARWIN)
   find_library(CARBON_LIBRARY Carbon)
   target_link_libraries(llwindow ${CARBON_LIBRARY})
