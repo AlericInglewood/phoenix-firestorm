@@ -14,8 +14,8 @@ $ df -H /opt
 Filesystem               Size  Used Avail Use% Mounted on
 /dev/mapper/NVME1T1-opt  580G  348G  203G  64% /opt
 
-$ export TOPPROJECT=/opt/secondlife/viewers/firestorm
-$ mkdir -p "$TOPPROJECT"
+$ export PROJECTBASE=/opt/secondlife/viewers/firestorm
+$ mkdir -p "$PROJECTBASE"
 ```
 This directory must be writable by you; we're not going to do this as root.
 
@@ -30,26 +30,26 @@ $ ccache --max-size 32
 
 3. Change directory into it and clone the repository into `phoenix-firestorm-git`:
 ```
-$ cd "$TOPPROJECT"
+$ cd "$PROJECTBASE"
 $ git clone https://github.com/AlericInglewood/phoenix-firestorm.git phoenix-firestorm-git
-$ export REPOBASE="$TOPPROJECT/phoenix-firestorm-git"
+$ export REPOBASE="$PROJECTBASE/phoenix-firestorm-git"
 ```
 We also set `REPOBASE` to that directory, so that now `$REPOBASE/indra` exists.
 
 4. Create a virtual environment for python3 and install autobuild and llsd.
 ```
-$ python3 -m venv "$TOPPROJECT/venv"
-$ export PATH="$TOPPROJECT/venv/bin:$PATH"
+$ python3 -m venv "$PROJECTBASE/venv"
+$ export PATH="$PROJECTBASE/venv/bin:$PATH"
 $ pip install autobuild llsd
 ```
-Note that pip in the last line should run `$TOPPROJECT/venv/bin/pip` because of the added path to `PATH`
-and likewise `which autobuild` now should return `$TOPPROJECT/venv/bin/autobuild`.
+Note that pip in the last line should run `$PROJECTBASE/venv/bin/pip` because of the added path to `PATH`
+and likewise `which autobuild` now should return `$PROJECTBASE/venv/bin/autobuild`.
 
 5. Clone the repository `fs-build-variables`:
 ```
-$ cd "$TOPPROJECT"
+$ cd "$PROJECTBASE"
 $ git clone https://github.com/AlericInglewood/fs-build-variables.git
-$ export AUTOBUILD_VARIABLES_FILE="$TOPPROJECT/fs-build-variables/variables"
+$ export AUTOBUILD_VARIABLES_FILE="$PROJECTBASE/fs-build-variables/variables"
 $ export AUTOBUILD_ADDRSIZE=64
 ```
 
@@ -57,7 +57,7 @@ $ export AUTOBUILD_ADDRSIZE=64
 
 We start with cloning the repository `3p-fmodstudio` into `3p-fmodstudio-git`:
 ```
-$ cd "$TOPPROJECT"
+$ cd "$PROJECTBASE"
 $ git clone https://github.com/FirestormViewer/3p-fmodstudio 3p-fmodstudio-git
 $ cd 3p-fmodstudio-git
 $ grep '^FMOD_VERSION_PRETTY' build-cmd.sh
@@ -71,7 +71,7 @@ Copy that file to the `3p-fmodstudio-git` directory.
 
 Next, build `3p-fmodstudio` and create an autobuild package:
 ```
-$ cd "$TOPPROJECT/3p-fmodstudio-git"
+$ cd "$PROJECTBASE/3p-fmodstudio-git"
 $ export AUTOBUILD_BUILD_ID=$(date +%Y%m%d%H%M)
 $ AUTOBUILD_CONFIG_FILE="autobuild.xml" autobuild build --all
 $ AUTOBUILD_CONFIG_FILE="autobuild.xml" autobuild package
@@ -82,7 +82,7 @@ wrote  /opt/secondlife/viewers/firestorm/3p-fmodstudio-git/fmodstudio-2.03.07-li
 ```
 Lets store this path in an environment variable and store the md5sum of the file in another environment variable:
 ```
-$ FMODPKG=$TOPPROJECT/3p-fmodstudio-git/fmodstudio-$FMOD_VERSION_PRETTY-linux64-$AUTOBUILD_BUILD_ID.tar.bz2   # Use the actual path that you got.
+$ FMODPKG=$PROJECTBASE/3p-fmodstudio-git/fmodstudio-$FMOD_VERSION_PRETTY-linux64-$AUTOBUILD_BUILD_ID.tar.bz2   # Use the actual path that you got.
 $ unset AUTOBUILD_BUILD_ID
 $ FMODMD5=$(md5sum $FMODPKG | sed -e 's/ .*//')
 $ echo $FMODMD5
@@ -115,14 +115,14 @@ By now you should have the following environment variable set:
 
 ```
 # Change to whatever you used:
-export TOPPROJECT=/opt/secondlife/viewers/firestorm
-export REPOBASE=$TOPPROJECT/phoenix-firestorm-git
+export PROJECTBASE=/opt/secondlife/viewers/firestorm
+export REPOBASE=$PROJECTBASE/phoenix-firestorm-git
 
 # Prepend python virtual environment to PATH.
-pre_path $TOPPROJECT/venv/bin
+pre_path $PROJECTBASE/venv/bin
 
 export AUTOBUILD_CONFIG_FILE=$REPOBASE/my_autobuild.xml
-export AUTOBUILD_VARIABLES_FILE=$TOPPROJECT/fs-build-variables/variables
+export AUTOBUILD_VARIABLES_FILE=$PROJECTBASE/fs-build-variables/variables
 export AUTOBUILD_ADDRSIZE=64
 
 # Change to whatever you used:
@@ -130,7 +130,7 @@ export CCACHE_DIR=/opt/ccache
 ```
 Additionally set the following environment variables.
 You might want to use http://carlowood.github.io/howto/cdeh.html for this
-and just put all of these variables in `$TOPPROJECT/env.source`.
+and just put all of these variables in `$PROJECTBASE/env.source`.
 ```
 # Something.
 export AUTOBUILD_BUILD_ID=aleric
